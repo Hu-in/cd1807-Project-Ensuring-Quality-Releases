@@ -1,3 +1,9 @@
+
+# NOTE:
+Azure DevOps pipeline could not be implemented due to subscription and billing restrictions.
+As an alternative, a GitHub Actions CI pipeline was successfully implemented.
+
+
 # Project Starter
 This repository contains the starter code for the **Ensuring Quality Releases** project of the cd1807 Ensuring Quality Releases (Quality Assurance) course taught by Nathan Anderson. 
 
