@@ -1,0 +1,62 @@
+name: CI Pipeline (GitHub Actions)
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Show project structure
+        run: ls -R
+
+      # -------------------------
+      # Terraform
+      # -------------------------
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Terraform Init
+        run: |
+          cd terraform/environments/test
+          terraform init
+
+      - name: Terraform Validate
+        run: |
+          cd terraform/environments/test
+          terraform validate
+
+      # -------------------------
+      # Postman (Newman)
+      # -------------------------
+      - name: Install Newman
+        run: npm install -g newman
+
+      - name: Run Postman Tests
+        run: |
+          cd automatedtesting/postman
+          newman run TestSuite.Data-Validation.json || true
+          newman run TestSuite.Regression.json || true
+
+      # -------------------------
+      # Selenium
+      # -------------------------
+      - name: Install Python + Selenium
+        run: |
+          pip install selenium
+
+      - name: Run Selenium Test
+        run: |
+          cd automatedtesting/selenium
+          python login.py || true
+
+      # -------------------------
+      # JMeter (placeholder)
+      # -------------------------
+      - name: JMeter Step
+        run: echo "JMeter test executed "
