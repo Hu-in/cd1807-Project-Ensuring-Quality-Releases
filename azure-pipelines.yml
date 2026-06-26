@@ -1,0 +1,21 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+
+- script: |
+    echo "Starting standalone test @ $(date)"
+
+    wget https://downloads.apache.org//jmeter/binaries/apache-jmeter-5.6.3.tgz
+    tar -xzf apache-jmeter-5.6.3.tgz
+    cd apache-jmeter-5.6.3/bin
+
+    ./jmeter -n \
+      -t $(System.DefaultWorkingDirectory)/automatedtesting/jmeter/test-suite/performance.jmx \
+      -l results.jtl
+
+    echo "summary"
+  displayName: 'Run JMeter test'
